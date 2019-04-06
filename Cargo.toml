@@ -1,0 +1,10 @@
+[package]
+name = "wslwrap"
+version = "0.1.0"
+authors = ["TheGoddessInari <thegoddessinari@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+lazy_static = "*"
+regex = "1"
+log = "*"
