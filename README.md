@@ -2,6 +2,14 @@
 
 A way to symlink WSL programs onto the PATH for Windows.
 
+## Status
+
+![Azure DevOps builds](https://img.shields.io/azure-devops/build/TheGoddessInari/332a0b97-a83e-434c-89d7-6bac0fcfb508/3.svg?logo=azure-devops)
+
+![Azure DevOps releases](https://img.shields.io/azure-devops/release/TheGoddessInari/332a0b97-a83e-434c-89d7-6bac0fcfb508/1/1.svg?logo=azure-devops)
+
+## Example
+
 Example usage:
 
 Put it in a unique directory on the PATH.
