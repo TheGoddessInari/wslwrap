@@ -5,7 +5,7 @@ authors = ["TheGoddessInari <thegoddessinari@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-lazy_static = "*"
+lazy_static = "1.0"
 regex = "1"
 env_logger = "0.6"
 
