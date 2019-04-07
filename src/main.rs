@@ -7,6 +7,7 @@ extern crate regex;
 
 #[macro_use]
 extern crate log;
+extern crate env_logger;
 
 use std::env;
 use std::option::Option;
@@ -137,6 +138,7 @@ fn escape(strings: &[String]) -> Vec<String> {
 }
 
 fn main() -> Result<(), ExitStatus> {
+    env_logger::init();
     let args: Vec<String> = env::args().collect();
     let status = Command::new("wsl.exe")
         .args(escape(&args))

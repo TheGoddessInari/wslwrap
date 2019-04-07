@@ -7,4 +7,8 @@ edition = "2018"
 [dependencies]
 lazy_static = "*"
 regex = "1"
-log = "*"
+env_logger = "0.6"
+
+[dependencies.log]
+version = "0.4"
+features = ["max_level_debug", "release_max_level_warn"]
