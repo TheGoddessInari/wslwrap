@@ -124,7 +124,7 @@ fn escape(strings: &[String]) -> Vec<String> {
     let mut escaped_strings: Vec<String> = Vec::new();
     if let Some((first, rest)) = strings.split_first() {
         escaped_strings.push(String::from(
-            Path::new(first).file_name().unwrap().to_string_lossy(),
+            Path::new(first).file_stem().unwrap().to_string_lossy(),
         ));
         for string in rest {
             if string.is_empty() {
