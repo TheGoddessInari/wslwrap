@@ -63,14 +63,12 @@ fn convert_path(string: &str) -> String {
     let drive_letter = DRIVE_LETTER.captures(string);
     debug!("{:?}", drive_letter);
 
+    let current_dir_path = env::current_dir().unwrap_or_else(|_| -> PathBuf { PathBuf::from(".") });
+    let current_dir = current_dir_path.to_str().unwrap_or("");
+
     if is_unix_path(&drive_letter, string) {
         if string.starts_with('/') {
-            if let Some(cap) = DRIVE_LETTER.captures(
-                env::current_dir()
-                    .unwrap_or_else(|_| -> PathBuf { PathBuf::from(".") })
-                    .to_str()
-                    .unwrap_or(""),
-            ) {
+            if let Some(cap) = DRIVE_LETTER.captures(current_dir) {
                 let new_path = format!("/mnt/{}", cap.map_to_str(1).to_lowercase());
                 let path = format!(
                     "{}{}",
@@ -102,20 +100,26 @@ fn convert_path(string: &str) -> String {
         let path = format_path(string, cap.map_to_str(1), &new_path);
         debug!("{:?}", cap);
         PATH_SEP.replace_all(&path, r#"/"#).to_string()
-    } else if let Some(cap) = DRIVE_LETTER.captures(
-        env::current_dir()
-            .unwrap_or_else(|_| -> PathBuf { PathBuf::from(".") })
-            .to_str()
-            .unwrap_or(""),
-    ) {
-        let new_path = format!("/mnt/{}", cap.map_to_str(1).to_lowercase());
-        let path = format!(
-            "{}{}",
-            new_path,
-            format_path(string, cap.map_to_str(1), &new_path)
-        );
-        debug!("{:?}\n{:?}", new_path, path);
-        PATH_SEP.replace_all(&path, r#"/"#).to_string()
+    } else if let Some(cap) = DRIVE_LETTER.captures(current_dir) {
+        if string.starts_with('\\') {
+            let new_path = format!("/mnt/{}", cap.map_to_str(1).to_lowercase());
+            let path = format!(
+                "{}{}",
+                new_path,
+                format_path(string, cap.map_to_str(1), &new_path)
+            );
+            debug!("{:?}\n{:?}", new_path, path);
+            PATH_SEP.replace_all(&path, r#"/"#).to_string()
+        } else {
+            let new_path = format!("/mnt/{}/", cap.map_to_str(1).to_lowercase());
+            let path = format!(
+                "{}/{}",
+                format_path(current_dir, cap.map_to_str(1), &new_path),
+                string
+            );
+            debug!("{:?}\n{:?}", new_path, path);
+            PATH_SEP.replace_all(&path, r#"/"#).to_string()
+        }
     } else {
         PATH_SEP.replace_all(string, r#"/"#).to_string()
     }
