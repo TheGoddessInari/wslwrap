@@ -1,6 +1,6 @@
 # wslwrap
 
-A way to symlink WSL programs onto the PATH for Windows.
+A way to symlink [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/faq) programs onto the PATH for Windows.
 
 ## Status
 
