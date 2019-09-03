@@ -1,19 +1,20 @@
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
+#![warn(rust_2018_idioms)]
 
 #[macro_use]
 extern crate lazy_static;
-extern crate regex;
 
 #[macro_use]
 extern crate log;
-extern crate env_logger;
+use env_logger;
 
 use std::env;
 use std::option::Option;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
+use regex;
 use regex::Regex;
 
 lazy_static! {
