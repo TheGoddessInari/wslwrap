@@ -1,12 +1,18 @@
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 #![warn(rust_2018_idioms)]
+#![feature(test)]
+
+#[cfg(test)]
+#[allow(unused_extern_crates)]
+extern crate test;
 
 use std::env;
 use std::option::Option;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
 
+#[derive(Debug, PartialEq)]
 enum UnixPathType {
     None,
     Other,
@@ -26,9 +32,8 @@ fn get_drive_letter(drive: &str) -> Option<char> {
     }
 }
 
-#[allow(clippy::needless_return)]
-fn is_unix_path(drive_letter: Option<char>, string: &str) -> UnixPathType {
-    return match drive_letter {
+fn is_unix_path(string: &str) -> UnixPathType {
+    match get_drive_letter(string) {
         Some(_) => UnixPathType::None,
         None => {
             if string.starts_with('/') {
@@ -41,7 +46,7 @@ fn is_unix_path(drive_letter: Option<char>, string: &str) -> UnixPathType {
                 UnixPathType::Other
             }
         }
-    };
+    }
 }
 
 fn backslash_to_slash(string: &str) -> String {
@@ -56,11 +61,12 @@ fn format_path(string: &str, drive_letter: char, new_path: &str) -> String {
 
 fn convert_path(string: &str) -> String {
     let current_drive = get_drive_letter(string);
+    let is_unix_path = is_unix_path(string);
 
     let current_dir_path = env::current_dir().unwrap_or_else(|_| -> PathBuf { PathBuf::from(".") });
     let current_dir = current_dir_path.to_str().unwrap_or("");
 
-    match is_unix_path(current_drive, string) {
+    match is_unix_path {
         UnixPathType::Root => {
             if let Some(drive_letter) = get_drive_letter(current_dir) {
                 let root_path = format!("/mnt/{}", drive_letter.to_lowercase());
@@ -141,4 +147,38 @@ fn main() -> Result<(), ExitStatus> {
         .expect("failed to execute WSL");
 
     std::process::exit(status.code().unwrap_or(0))
+}
+
+#[cfg(test)]
+mod tests {
+    #[test]
+    fn remove_first() {
+        use super::remove_first;
+        assert_eq!(remove_first("Test").unwrap(), r#"est"#);
+    }
+
+    #[test]
+    fn backslash_to_slash() {
+        use super::backslash_to_slash;
+        assert_eq!(backslash_to_slash(r#"\/\/\/\"#), r#"///////"#);
+    }
+    #[test]
+    fn get_drive_letter() {
+        use super::get_drive_letter;
+        assert_eq!(get_drive_letter("C:\\"), Some('C'));
+        assert_eq!(get_drive_letter("C://"), Some('C'));
+    }
+    #[test]
+    fn is_unix_path() {
+        use super::is_unix_path;
+        use super::UnixPathType;
+        assert_eq!(is_unix_path(r#"/mnt/bsd/Downloads"#), UnixPathType::Root);
+        assert_eq!(is_unix_path(r#"~/.config/"#), UnixPathType::Home);
+        assert_eq!(is_unix_path(r#"e:/Docs"#), UnixPathType::None);
+        assert_eq!(is_unix_path(r#"F:/Documents"#), UnixPathType::None);
+        assert_eq!(is_unix_path(r#"r:\\Home"#), UnixPathType::None);
+        assert_eq!(is_unix_path(r#"a:\\shared"#), UnixPathType::None);
+        assert_eq!(is_unix_path(r#".\test/stuff"#), UnixPathType::None);
+        assert_eq!(is_unix_path(r#"./"#), UnixPathType::Other);
+    }
 }
