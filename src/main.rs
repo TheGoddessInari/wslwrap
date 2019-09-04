@@ -1,11 +1,6 @@
 #![deny(clippy::all)]
 #![deny(clippy::pedantic)]
 #![warn(rust_2018_idioms)]
-#![feature(test)]
-
-#[cfg(test)]
-#[allow(unused_extern_crates)]
-extern crate test;
 
 use std::env;
 use std::option::Option;
