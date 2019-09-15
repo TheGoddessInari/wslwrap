@@ -5,6 +5,7 @@ A way to symlink [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/
 ## Status
 
 ![Azure DevOps builds](https://img.shields.io/azure-devops/build/TheGoddessInari/332a0b97-a83e-434c-89d7-6bac0fcfb508/3.svg?logo=azure-devops)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTheGoddessInari%2Fwslwrap.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FTheGoddessInari%2Fwslwrap?ref=badge_shield)
 
 ![Azure DevOps releases](https://img.shields.io/azure-devops/release/TheGoddessInari/332a0b97-a83e-434c-89d7-6bac0fcfb508/1/1.svg?logo=azure-devops)
 
@@ -30,3 +31,7 @@ accessories  tabletextservice
 ```
 
 This should also work with varying path separators and UNIXisms like / (root of current drive), and ~ (USERPROFILE).
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FTheGoddessInari%2Fwslwrap.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FTheGoddessInari%2Fwslwrap?ref=badge_large)
