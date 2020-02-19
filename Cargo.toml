@@ -1,10 +1,11 @@
 [package]
 name = "wslwrap"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["TheGoddessInari <thegoddessinari@gmail.com>"]
 edition = "2018"
 
 [dependencies]
+win32job = "1"
 
 [profile.release]
 lto = true

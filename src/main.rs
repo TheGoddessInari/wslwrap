@@ -6,6 +6,7 @@ use std::env;
 use std::option::Option;
 use std::path::{Path, PathBuf};
 use std::process::{Command, ExitStatus};
+use win32job::Job;
 
 #[derive(Debug, PartialEq)]
 enum UnixPathType {
@@ -134,14 +135,30 @@ fn escape(strings: &[String]) -> Vec<String> {
     escaped_strings
 }
 
-fn main() -> Result<(), ExitStatus> {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let job = Job::create()?;
+    let mut info = job.query_extended_limit_info()?;
+
+    info.limit_kill_on_job_close();
+
+    job.set_extended_limit_info(&mut info)?;
+
+    job.assign_current_process()?;
     let args: Vec<String> = env::args().collect();
     let status = Command::new("wsl.exe")
         .args(escape(&args))
         .status()
         .expect("failed to execute WSL");
 
-    std::process::exit(status.code().unwrap_or(0))
+    if status.success() {
+        Ok(())
+    } else {
+        Err(Box::from(format!(
+            "{} returned a status code of {:?}.",
+            args[0],
+            status.code()
+        )))
+    }
 }
 
 #[cfg(test)]
