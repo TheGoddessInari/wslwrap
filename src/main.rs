@@ -5,7 +5,7 @@
 use std::env;
 use std::option::Option;
 use std::path::{Path, PathBuf};
-use std::process::{Command, ExitStatus};
+use std::process::Command;
 use win32job::Job;
 
 #[derive(Debug, PartialEq)]
