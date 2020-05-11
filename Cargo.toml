@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 win32job = "1"
+home = "0"
 
 [profile.release]
 lto = true

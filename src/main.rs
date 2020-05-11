@@ -78,7 +78,9 @@ fn convert_path(string: &str) -> String {
             }
         }
         UnixPathType::Home => {
-            let home_path = env::var("USERPROFILE").unwrap_or_else(|_| env::var("HOME").unwrap());
+            let home_env = home::home_dir().unwrap();
+            let home_path = home_env.to_str().unwrap();
+
             if let Some(drive_letter) = get_drive_letter(&home_path) {
                 let root_path = format!("/mnt/{}/", drive_letter.to_lowercase());
                 let old_path = format!("{}{}", home_path, remove_first(string).unwrap_or(""));
