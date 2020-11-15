@@ -23,7 +23,7 @@ fn remove_first(s: &str) -> Option<&str> {
 fn get_drive_letter(drive: &str) -> Option<char> {
     let mut it = drive.chars();
     match (it.next(), it.next()) {
-        (Some(c), Some(':')) if c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' => Some(c),
+        (Some(c), Some(':')) if ('a'..='z').contains(&c) || ('A'..='Z').contains(&c) => Some(c),
         _ => None,
     }
 }
