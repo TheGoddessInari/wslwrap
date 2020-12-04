@@ -167,32 +167,28 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 mod tests {
     #[test]
     fn remove_first() {
-        use super::remove_first;
-        assert_eq!(remove_first("Test").unwrap(), r#"est"#);
+        assert_eq!(super::remove_first("Test").unwrap(), r#"est"#);
     }
 
     #[test]
     fn backslash_to_slash() {
-        use super::backslash_to_slash;
-        assert_eq!(backslash_to_slash(r#"\/\/\/\"#), r#"///////"#);
+        assert_eq!(super::backslash_to_slash(r#"\/\/\/\"#), r#"///////"#);
     }
     #[test]
     fn get_drive_letter() {
-        use super::get_drive_letter;
-        assert_eq!(get_drive_letter("C:\\"), Some('C'));
-        assert_eq!(get_drive_letter("C://"), Some('C'));
+        assert_eq!(super::get_drive_letter("C:\\"), Some('C'));
+        assert_eq!(super::get_drive_letter("C://"), Some('C'));
     }
     #[test]
     fn is_unix_path() {
-        use super::is_unix_path;
         use super::UnixPathType;
-        assert_eq!(is_unix_path(r#"/mnt/bsd/Downloads"#), UnixPathType::Root);
-        assert_eq!(is_unix_path(r#"~/.config/"#), UnixPathType::Home);
-        assert_eq!(is_unix_path(r#"e:/Docs"#), UnixPathType::None);
-        assert_eq!(is_unix_path(r#"F:/Documents"#), UnixPathType::None);
-        assert_eq!(is_unix_path(r#"r:\\Home"#), UnixPathType::None);
-        assert_eq!(is_unix_path(r#"a:\\shared"#), UnixPathType::None);
-        assert_eq!(is_unix_path(r#".\test/stuff"#), UnixPathType::None);
-        assert_eq!(is_unix_path(r#"./"#), UnixPathType::Other);
+        assert_eq!(super::is_unix_path(r#"/mnt/bsd/Downloads"#), UnixPathType::Root);
+        assert_eq!(super::is_unix_path(r#"~/.config/"#), UnixPathType::Home);
+        assert_eq!(super::is_unix_path(r#"e:/Docs"#), UnixPathType::None);
+        assert_eq!(super::is_unix_path(r#"F:/Documents"#), UnixPathType::None);
+        assert_eq!(super::is_unix_path(r#"r:\\Home"#), UnixPathType::None);
+        assert_eq!(super::is_unix_path(r#"a:\\shared"#), UnixPathType::None);
+        assert_eq!(super::is_unix_path(r#".\test/stuff"#), UnixPathType::None);
+        assert_eq!(super::is_unix_path(r#"./"#), UnixPathType::Other);
     }
 }
