@@ -29,9 +29,10 @@ fn get_drive_letter(drive: &str) -> Option<char> {
 }
 
 fn is_unix_path(string: &str) -> UnixPathType {
-    match get_drive_letter(string) {
-        Some(_) => UnixPathType::None,
-        None => {
+    if get_drive_letter(string).is_some() {
+        UnixPathType::None
+    } else {
+        {
             if string.starts_with('/') {
                 UnixPathType::Root
             } else if string.starts_with("~/") {
@@ -182,7 +183,10 @@ mod tests {
     #[test]
     fn is_unix_path() {
         use super::UnixPathType;
-        assert_eq!(super::is_unix_path(r#"/mnt/bsd/Downloads"#), UnixPathType::Root);
+        assert_eq!(
+            super::is_unix_path(r#"/mnt/bsd/Downloads"#),
+            UnixPathType::Root
+        );
         assert_eq!(super::is_unix_path(r#"~/.config/"#), UnixPathType::Home);
         assert_eq!(super::is_unix_path(r#"e:/Docs"#), UnixPathType::None);
         assert_eq!(super::is_unix_path(r#"F:/Documents"#), UnixPathType::None);
