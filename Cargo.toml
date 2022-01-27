@@ -2,7 +2,7 @@
 name = "wslwrap"
 version = "0.2.2"
 authors = ["TheGoddessInari <thegoddessinari@gmail.com>"]
-edition = "2018"
+edition = "2021"
 
 [dependencies]
 win32job = "1"
@@ -12,3 +12,4 @@ home = "0"
 lto = true
 codegen-units = 1
 opt-level = "z"
+strip = "symbols"
