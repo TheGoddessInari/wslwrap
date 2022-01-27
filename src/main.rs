@@ -34,7 +34,11 @@ fn is_unix_path(string: &str) -> UnixPathType {
     } else {
         {
             if string.starts_with('/') {
-                UnixPathType::Root
+                if string.starts_with("/mnt") {
+                    UnixPathType::Other
+                } else {
+                    UnixPathType::Root
+                }
             } else if string.starts_with("~/") {
                 UnixPathType::Home
             } else if string.find('\\').is_some() {
@@ -82,7 +86,7 @@ fn convert_path(string: &str) -> String {
             let home_env = home::home_dir().unwrap();
             let home_path = home_env.to_str().unwrap();
 
-            if let Some(drive_letter) = get_drive_letter(&home_path) {
+            if let Some(drive_letter) = get_drive_letter(home_path) {
                 let root_path = format!("/mnt/{}/", drive_letter.to_lowercase());
                 let old_path = format!("{}{}", home_path, remove_first(string).unwrap_or(""));
                 let path = format_path(&old_path, drive_letter, &root_path);
@@ -183,9 +187,10 @@ mod tests {
     #[test]
     fn is_unix_path() {
         use super::UnixPathType;
+        assert_eq!(super::is_unix_path(r#"/usr/local"#), UnixPathType::Root);
         assert_eq!(
             super::is_unix_path(r#"/mnt/bsd/Downloads"#),
-            UnixPathType::Root
+            UnixPathType::Other
         );
         assert_eq!(super::is_unix_path(r#"~/.config/"#), UnixPathType::Home);
         assert_eq!(super::is_unix_path(r#"e:/Docs"#), UnixPathType::None);
